@@ -1,15 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code, Database, Cloud, Brain, Wrench, Monitor } from 'lucide-react';
 import { skillsData } from '../data/skillsData';
-import * as Si from 'simple-icons';
-
-// Add CSS for flip card animation
-import './Skills.css';
 
 const Skills = () => {
-  // No need for activeCategory state as we'll display all categories
-  
   const categories = [
     { id: 'frontend', name: 'Frontend', icon: Monitor, color: 'from-blue-400 to-cyan-500' },
     { id: 'backend', name: 'Backend', icon: Code, color: 'from-green-400 to-emerald-500' },
@@ -34,91 +28,79 @@ const Skills = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
   const SkillCard = ({ skill, index }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     
-    const renderIcon = () => {
-      if (skill.iconName && Si[skill.iconName]) {
-        return (
-          <svg 
-            width="28" 
-            height="28" 
-            viewBox="0 0 24 24" 
-            fill="currentColor" 
-            className="transform transition-transform duration-300 hover:rotate-6"
-            dangerouslySetInnerHTML={{ __html: Si[skill.iconName].path }}
-          />
-        );
-      }
-      return skill.icon;
-    };
-
     return (
-    <motion.div
-      className="relative h-28 sm:h-32 w-full cursor-pointer"
-      variants={itemVariants}
-      whileHover={{ y: -8, scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-      onHoverStart={() => setIsFlipped(true)}
-      onHoverEnd={() => setIsFlipped(false)}
-      layout
-    >
-      <div className={`skill-card w-full h-full ${isFlipped ? 'flipped' : ''}`}>
-        <div className="skill-card-inner w-full h-full">
-          {/* Front of card */}
-          <div className="skill-card-front bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-white/30 dark:border-gray-700/30 shadow-lg hover:shadow-violet-500/20 dark:hover:shadow-violet-700/30 transition-all duration-300">
-            <div className="text-2xl sm:text-3xl mb-1 sm:mb-2 text-violet-600 dark:text-violet-400 group-hover:scale-110 transition-transform duration-300">
-              {renderIcon()}
-            </div>
-            <h3 className="text-xs sm:text-sm font-semibold text-center text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
+      <motion.div
+        className="relative w-full h-32"
+        variants={itemVariants}
+        onHoverStart={() => setIsFlipped(true)}
+        onHoverEnd={() => setIsFlipped(false)}
+      >
+        <motion.div
+          className="w-full h-full [transform-style:preserve-3d] transition-all duration-100"
+          animate={{ 
+            rotateY: isFlipped ? 180 : 0,
+          }}
+        >
+          {/* Front Side - Icon and Name */}
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-white/80 dark:bg-gray-800/80 rounded-xl border border-white/30 dark:border-gray-700/30 flex flex-col items-center justify-center gap-3 p-4">
+            <motion.div 
+              className="text-violet-600 dark:text-violet-400 text-3xl"
+              whileHover={{ scale: 1.1, rotate: 5}}
+            >
+              <skill.icon />
+              {/* {skill.icon} */}
+            </motion.div>
+            <p className="font-medium text-gray-800 dark:text-white text-sm">
               {skill.name}
-            </h3>
+            </p>
           </div>
-          
-          {/* Back of card */}
-          <div className="skill-card-back bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl border border-white/30 dark:border-gray-700/30 shadow-lg text-white">
-            <motion.span 
-              className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 inline-block"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+
+          {/* Back Side - Proficiency */}
+          <div 
+            className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl p-4 flex flex-col items-center justify-center text-white"
+          >
+            <motion.div 
+              className="text-3xl font-bold mb-2"
+              initial={{ scale: 0 }}
+              animate={{ scale: isFlipped ? 1 : 0 }}
+              transition={{ type: "spring", stiffness: 200 }}
             >
               {skill.level}%
-            </motion.span>
+            </motion.div>
             
-            {/* Progress Bar */}
-            <div className="w-full mb-1 sm:mb-2">
-              <div className="h-1.5 sm:h-2 bg-white/30 rounded-full overflow-hidden shadow-inner">
-                <motion.div
-                  className="h-full bg-white rounded-full shadow"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${skill.level}%` }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                />
-              </div>
-            </div>
+            <motion.div 
+              className="w-full h-1.5 bg-white/30 rounded-full overflow-hidden"
+              initial={{ width: 0 }}
+              animate={{ width: isFlipped ? "100%" : "0%" }}
+            >
+              <motion.div
+                className="h-full bg-white rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: isFlipped ? `${skill.level}%` : "0%" }}
+                transition={{ delay: 0.1 }}
+              />
+            </motion.div>
             
             <motion.p 
-              className="text-xs text-center text-white/90 leading-tight"
+              className="text-xs text-white/90 text-center mt-2 line-clamp-2"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              animate={{ opacity: isFlipped ? 1 : 0 }}
+              transition={{ delay: 0.1 }}
             >
-              {window.innerWidth < 640 && skill.description.length > 40
-                ? `${skill.description.substring(0, 40)}...`
-                : skill.description.length > 60
-                  ? `${skill.description.substring(0, 60)}...`
-                  : skill.description}
+              {skill.description}
             </motion.p>
           </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+        </motion.div>
+      </motion.div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-amber-50 dark:from-gray-900 dark:via-purple-900/10 dark:to-gray-900">

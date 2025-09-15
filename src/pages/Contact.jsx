@@ -46,13 +46,11 @@ const Contact = () => {
     setSubmitStatus('');
 
     try {
-      // Initialize EmailJS with your public key
-      // You'll need to replace these with your actual EmailJS credentials
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        'YOUR_SERVICE_ID', // Get from EmailJS dashboard
+        'YOUR_TEMPLATE_ID', // Get from EmailJS dashboard
         formRef.current,
-        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+        'YOUR_PUBLIC_KEY' // Get from EmailJS dashboard
       );
       
       setSubmitStatus('success');

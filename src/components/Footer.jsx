@@ -7,6 +7,7 @@ const Footer = () => {
   const quickLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
     { name: 'Skills', path: '/skills' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -16,25 +17,22 @@ const Footer = () => {
       name: 'LinkedIn',
       icon: Linkedin,
       href: 'https://linkedin.com/in/keerthana-m-g',
-      color: 'hover:text-blue-600'
+      bgColor: 'bg-[#0A66C2] hover:bg-[#0077B5]',
+      animation: { rotate: [0, -10, 10, -10, 0] }
     },
     {
       name: 'GitHub',
       icon: Github,
       href: 'https://github.com/KeerrthanaMG',
-      color: 'hover:text-gray-800 dark:hover:text-white'
+      bgColor: 'bg-[#24292F] hover:bg-[#000000]',
+      animation: { scale: [1, 1.2, 1] }
     },
     {
       name: 'Medium',
       icon: BookOpen,
       href: 'https://medium.com/@keerthanamg19',
-      color: 'hover:text-green-600'
-    },
-    {
-      name: 'Email',
-      icon: Mail,
-      href: 'mailto:keerthanamg19@gmail.com',
-      color: 'hover:text-red-600'
+      bgColor: 'bg-[#00AB6C] hover:bg-[#00C77B]',
+      animation: { y: [0, -5, 0] }
     }
   ];
 
@@ -59,15 +57,22 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="mt-4 sm:mt-0">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Links</h3>
+            <div className="flex flex-wrap gap-4">
               {quickLinks.map((link, index) => (
-                <motion.div key={index} whileHover={{ x: 5 }}>
+                <motion.div key={index} whileHover={{ y: -2, x: 2 }}>
                   <Link 
                     to={link.path} 
-                    className="text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 text-sm"
+                    className="text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-all duration-300 flex items-center gap-1 group"
                   >
-                    {link.name}
+                    <span className="text-sm">{link.name}</span>
+                    <motion.span
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      →
+                    </motion.span>
                   </Link>
                 </motion.div>
               ))}
@@ -77,18 +82,18 @@ const Footer = () => {
           {/* Social Links */}
           <div className="mt-4 md:mt-0">
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Connect With Me</h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex gap-4">
               {socialLinks.map((link, index) => (
                 <motion.a
                   key={index}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  className={`p-3 rounded-lg ${link.bgColor} text-white shadow-lg hover:shadow-xl transition-all duration-300`}
+                  whileHover={link.animation}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <link.icon size={18} />
+                  <link.icon className="h-5 w-5" />
                 </motion.a>
               ))}
             </div>

@@ -45,7 +45,20 @@ export default {
       spacing: {
         '18': '4.5rem',
         '88': '22rem',
-      }
+      },
+      // Add these custom utilities
+      backdropFilter: {
+        'none': 'none',
+      },
+      transformStyle: {
+        'preserve-3d': 'preserve-3d',
+      },
+      backfaceVisibility: {
+        'hidden': 'hidden',
+      },
+      perspective: {
+        '1000': '1000px',
+      },
     },
   },
   plugins: [],
