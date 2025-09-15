@@ -1,0 +1,67 @@
+/* Flip Card Animation Styles */
+.skill-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  height: 100%;
+}
+
+.skill-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.skill-card.flipped .skill-card-inner {
+  transform: rotateY(180deg);
+}
+
+.skill-card-front, .skill-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 0.75rem;
+}
+
+.skill-card-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.skill-card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Ensure proper 3D rendering in different browsers */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .skill-card {
+    -webkit-perspective: 1000px;
+    -webkit-transform-style: preserve-3d;
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .skill-card-back {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .skill-card-inner {
+    min-height: 120px;
+  }
+}
